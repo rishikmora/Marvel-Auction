@@ -1,0 +1,317 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Warm dark theme. Everything is a token so the whole product re-skins from here.
+
+  The ground is a near-black with brown in it rather than blue-black, and body copy is
+  cream rather than pure white — the pairing reads warm and playful instead of clinical,
+  and it stops large areas of text from glaring on an OLED screen.
+*/
+:root {
+  --font-display: var(--font-big-shoulders), 'Arial Narrow', Impact, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-round: var(--font-fredoka), var(--font-sans);
+
+  --surface-0: #0c0b0a;
+  --surface-1: #161412;
+  --surface-2: #201d1a;
+  --surface-3: #2a2622;
+  --line: rgba(241, 236, 226, 0.1);
+  --line-strong: rgba(241, 236, 226, 0.2);
+
+  --text-hi: #f1ece2;
+  --text-mid: #a8a196;
+  --text-low: #8c8679;
+
+  --accent: #ff4d8d;
+  --accent-soft: #ff87b1;
+  --gold: #f2c14e;
+  --sky: #5bc8e8;
+  --violet: #a98bff;
+  --mint: #5fd39b;
+
+  --radius-card: 1.05rem;
+
+  color-scheme: dark;
+}
+
+* {
+  border-color: var(--line);
+}
+
+html,
+body {
+  background: var(--surface-0);
+  color: var(--text-hi);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100dvh;
+  position: relative;
+}
+
+/*
+  Background wash in its own fixed layer. `background-attachment: fixed` on <body> forces
+  a full-page repaint every scroll frame, which is visibly janky on phones.
+*/
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(900px 520px at 85% -5%, rgba(255, 77, 141, 0.1), transparent 62%),
+    radial-gradient(700px 460px at 10% 5%, rgba(242, 193, 78, 0.05), transparent 60%),
+    linear-gradient(180deg, #0c0b0a 0%, #100e0c 45%, #0c0b0a 100%);
+}
+
+/* Fine grain keeps the large flat areas from banding. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------- */
+/* Typography                                                        */
+/* ---------------------------------------------------------------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+}
+
+/* The oversized hero voice: three short words, tight leading. */
+.headline {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  font-size: clamp(3rem, 9.5vw, 6.5rem);
+}
+
+.wordmark {
+  font-family: var(--font-round);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-low);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ---------------------------------------------------------------- */
+/* Surfaces                                                          */
+/* ---------------------------------------------------------------- */
+
+.panel {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+.panel-flat {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+
+/* Big tappable entry cards on the landing page. */
+.tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+.tile:hover {
+  background: var(--surface-3);
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+.tile-accent {
+  background: var(--accent);
+  border-color: transparent;
+  color: #1a0a12;
+}
+.tile-accent:hover {
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+
+.hairline {
+  border-top: 1px solid var(--line);
+}
+
+.edge-glow {
+  position: relative;
+}
+.edge-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, rgba(255, 77, 141, 0.5), transparent 45%, rgba(242, 193, 78, 0.28));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Scrollbars                                                        */
+/* ---------------------------------------------------------------- */
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(241, 236, 226, 0.16) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(241, 236, 226, 0.14);
+  border-radius: 999px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------------------------------------------------------------- */
+/* Focus + accessibility                                             */
+/* ---------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: #1a0a12;
+  border-radius: 0.5rem;
+}
+
+/*
+  Reduced motion comes from the OS setting AND the in-app toggle, which sets
+  data-reduce-motion on <html>. Animation is decoration here, never the only signal.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+html[data-contrast='high'] {
+  --text-mid: #ded8cc;
+  --text-low: #c0b9ac;
+  --line: rgba(241, 236, 226, 0.26);
+  --line-strong: rgba(241, 236, 226, 0.44);
+}
+
+/* ---------------------------------------------------------------- */
+/* Utilities                                                         */
+/* ---------------------------------------------------------------- */
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(241, 236, 226, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 236, 226, 0.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Edge fade for the character marquee. */
+.fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(241, 236, 226, 0.08), transparent);
+  animation: sheen-sweep 2.6s ease-in-out infinite;
+}
+@keyframes sheen-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
